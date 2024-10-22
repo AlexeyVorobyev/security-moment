@@ -28,7 +28,7 @@ public:
 
     void parseParam(const std::string &rawParam) {
 
-        if (rawParam.find(paramKeys.inputFile)) {
+        if (rawParam.find(paramKeys.inputFile) == 0) {
             std::string value = rawParam.substr(
                     rawParam.find("=") + 1,
                     rawParam.length() - rawParam.find("=") - 1
@@ -37,7 +37,7 @@ public:
             paramValues.inputFile = value;
         }
 
-        if (rawParam.find(paramKeys.outputFile)) {
+        if (rawParam.find(paramKeys.outputFile) == 0) {
             std::string value = rawParam.substr(
                     rawParam.find("=") + 1,
                     rawParam.length() - rawParam.find("=") - 1
@@ -48,28 +48,44 @@ public:
     }
 
     void execute() const {
-        std::ifstream inputFile(paramValues.inputFile);
-        std::ofstream outputFile(paramValues.outputFile);
+        std::ifstream inputFile;
+        inputFile.open(paramValues.inputFile.c_str(), std::ios_base::in);
 
         if (!inputFile.is_open()) {
             std::cerr << "Error opening the " << paramValues.inputFile << " file!" << std::endl;
             return;
         }
+
+        std::string readLineData;
+
+        std::vector<std::string> compressedData;
+
+        while (getline(inputFile, readLineData)) {
+            std::string compressedLine = this->rleCompressor->compress(readLineData);
+            compressedData.push_back(compressedLine);
+        }
+
+        inputFile.close();
+
+        std::ofstream outputFile;
+        outputFile.open(paramValues.outputFile.c_str(), std::ios_base::out | std::ios_base::binary);
+
+
         if (!outputFile.is_open()) {
             std::cerr << "Error opening the " << paramValues.outputFile << " file!" << std::endl;
             return;
         }
 
-        std::string readLineData;
 
-        while (getline(inputFile, readLineData)) {
-            std::string compressedData = this->rleCompressor->compress(readLineData);
-            outputFile << compressedData << std::endl;
+        for (const std::string& item : compressedData) {
+            outputFile << item.c_str() << std::endl;
         }
 
-        inputFile.close();
+
+        outputFile.flush();
+
         outputFile.close();
-    };
+   };
 
 private:
     struct ParamKeys {
