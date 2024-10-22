@@ -4,13 +4,18 @@
 
 ### Вариант №2
 
-### [Задание №7](./task_7)  - RLE
+### [Задание №7](./task_7/README.md)  - RLE
 
-### [Задание №11](./task_11)  - RLE
+### [Задание №11](./task_11/README.md)  - Super RLE
 
 ## Команды:
 
-Команда компиляции программы c++
+Команда сборки cmake
 ```shell
-g++ -o <to> <from>.cpp 
+cmake . .
+```
+
+Команда сборки executable
+```shell
+make
 ```
