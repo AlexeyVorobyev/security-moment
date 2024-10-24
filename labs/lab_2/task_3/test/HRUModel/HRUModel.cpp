@@ -102,31 +102,70 @@ TEST_CASE( "Add existing relation to model", "[HRUModel]" ) {
     auto* model = new HRUModel();
 
     model
-    ->createObject("file_1")
-    ->createSubject("alex_1")
-    ->createRelation(
-        "file_1",
-        "alex_1",
-        HRURightEnum::READ
-    )
-    ->createObject("file")
-    ->createSubject("alex")
-    ->createRelation(
-        "file",
-        "alex",
-        HRURightEnum::READ
-    )
-    ->createRelation(
-        "file",
-        "alex",
-        HRURightEnum::WRITE
-    );
+        ->createObject("file_1")
+        ->createSubject("alex_1")
+        ->createRelation(
+            "file_1",
+            "alex_1",
+            HRURightEnum::READ
+        )
+        ->createObject("file")
+        ->createSubject("alex")
+        ->createRelation(
+            "file",
+            "alex",
+            HRURightEnum::READ
+        )
+        ->createRelation(
+            "file",
+            "alex",
+            HRURightEnum::WRITE
+        );
 
     try {
         model->createRelation(
             "file",
             "alex",
             HRURightEnum::WRITE
+        );
+    } catch (std::invalid_argument error) {
+    }
+}
+
+TEST_CASE( "Destroy not existing relation in model", "[HRUModel]" ) {
+    auto* model = new HRUModel();
+
+    model
+        ->createObject("file_1")
+        ->createSubject("alex_1")
+        ->createRelation(
+            "file_1",
+            "alex_1",
+            HRURightEnum::READ
+        )
+        ->destroyRelation(
+            "file_1",
+            "alex_1",
+            HRURightEnum::READ
+        )
+        ->createObject("file")
+        ->createSubject("alex")
+        ->createRelation(
+            "file",
+            "alex",
+            HRURightEnum::READ
+        )
+        ->createRelation(
+            "file",
+            "alex",
+            HRURightEnum::WRITE
+        );
+
+    try {
+        model->destroyRelation(
+            "file",
+            "alex",
+            HRURightEnum::EXECUTE
         );
     } catch (std::invalid_argument error) {
     }

@@ -1,0 +1,9 @@
+5
+5
+
+o1 o2 o3 o4 o5
+s1 rw rwox - rwox rwox
+s2 rwox rwo rwo ro rwo
+s3 rw rw - rw rw
+s4 r r r - r
+s5 rx rx rx rx r

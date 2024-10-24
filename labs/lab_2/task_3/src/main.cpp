@@ -1,4 +1,4 @@
-#include "Commander/Commander.h"
+#include "Commander/Commander.cpp"
 
 int main(int argc, char **argv) {
 

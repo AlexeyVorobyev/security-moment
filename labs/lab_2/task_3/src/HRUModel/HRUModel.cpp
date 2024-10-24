@@ -5,9 +5,11 @@
 #include "set"
 #include "string"
 #include "iostream"
-#include "HRURelation.cpp"
 #include "copyIf.cpp"
 #include "fmt/core.h"
+#include "algorithm"
+
+#include "HRURelation.cpp"
 
 typedef std::set <std::string> HRUObjects;
 
@@ -60,23 +62,20 @@ public:
 
         HRURelations clearedRelations;
 
-        struct Condition {
-            Condition(std::string compare) {
-                this->compare = compare;
-            }
+        auto predicateFactory = [](std::string compare) {
 
-            std::string compare;
+            auto predicate = [&](HRURelation relation) {
+                return relation.object != compare;
+            };
 
-            bool operator()(HRURelation relation) {
-                return relation.object != this->compare;
-            }
+            return predicate;
         };
 
         copyIf(
                 this->relations.begin(),
                 this->relations.end(),
                 std::inserter(clearedRelations, clearedRelations.end()),
-                Condition(objectKey)
+                predicateFactory(objectKey)
         );
 
         this->relations = clearedRelations;
@@ -106,23 +105,20 @@ public:
 
         HRURelations clearedRelations;
 
-        struct Condition {
-            Condition(std::string compare) {
-                this->compare = compare;
-            }
+        auto predicateFactory = [](std::string compare) {
 
-            std::string compare;
+            auto predicate = [&](HRURelation relation) {
+                return relation.subject != compare;
+            };
 
-            bool operator()(HRURelation relation) {
-                return relation.subject != this->compare;
-            }
+            return predicate;
         };
 
         copyIf(
                 this->relations.begin(),
                 this->relations.end(),
                 std::inserter(clearedRelations, clearedRelations.end()),
-                Condition(subjectKey)
+                predicateFactory(subjectKey)
         );
 
         this->relations = clearedRelations;
@@ -145,48 +141,89 @@ public:
             throw std::invalid_argument("Субъекта с таким ключом не существует");
         }
 
-
-        HRURelations relationsDuplicate;
-
-        struct Condition {
-            Condition(HRURelation compare) {
-                this->compare = compare;
-            }
-
-            HRURelation compare;
-
-            bool operator()(HRURelation relation) {
-                return relation.subject == this->compare.subject
-                       && relation.object == this->compare.object
-                       && relation.right == this->compare.right;
-            }
-        };
-
         HRURelation newRelation = {
                 objectKey,
                 subjectKey,
                 rightKey
         };
 
-        copyIf(
+        auto predicateFactory = [](HRURelation a) {
+
+            auto predicate = [&](HRURelation b) {
+                return a.subject == b.subject
+                       && a.object == b.object
+                       && a.right == b.right;
+            };
+
+            return predicate;
+        };
+
+        auto it = std::find_if(
                 this->relations.begin(),
                 this->relations.end(),
-                std::inserter(relationsDuplicate, relationsDuplicate.end()),
-                Condition(newRelation)
+                predicateFactory(newRelation)
         );
 
-        fmt::print("size: {}",relationsDuplicate.size());
-
-        if (!relationsDuplicate.empty()) {
+        if (it != this->relations.end()) {
             throw std::invalid_argument("Такое право уже существует");
         }
 
         this->relations.insert(newRelation);
 
-        fmt::print("size: {}",this->relations.size());
-
         fmt::print(
                 "Право {} для субъекта {} над объектом {} добавлено в модель\n",
+                char(rightKey),
+                subjectKey,
+                objectKey
+        );
+
+        return this;
+    }
+
+    HRUModel *destroyRelation(
+            std::string objectKey,
+            std::string subjectKey,
+            HRURightEnum rightKey
+    ) {
+        if (this->objects.find(objectKey) == this->objects.end()) {
+            throw std::invalid_argument("Объекта с таким ключом не существует");
+        }
+
+        if (this->subjects.find(subjectKey) == this->subjects.end()) {
+            throw std::invalid_argument("Субъекта с таким ключом не существует");
+        }
+
+        HRURelation toDeleteRelation = {
+                objectKey,
+                subjectKey,
+                rightKey
+        };
+
+        auto predicateFactory = [](HRURelation a) {
+
+            auto predicate = [&](HRURelation b) {
+                return a.subject == b.subject
+                       && a.object == b.object
+                       && a.right == b.right;
+            };
+
+            return predicate;
+        };
+
+        auto it = std::find_if(
+                this->relations.begin(),
+                this->relations.end(),
+                predicateFactory(toDeleteRelation)
+        );
+
+        if (it == this->relations.end()) {
+            throw std::invalid_argument("Такого права не существует");
+        }
+
+        this->relations.erase(it);
+
+        fmt::print(
+                "Право {} для субъекта {} над объектом {} удалено из модели\n",
                 char(rightKey),
                 subjectKey,
                 objectKey

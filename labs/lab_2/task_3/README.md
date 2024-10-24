@@ -6,6 +6,7 @@
 
 Дискреционная модель доступа Харрисона-Руззо-Ульмана, модели наоснове матрицы доступа
 
+
 ```bash
-sudo ./Main --in-file=./input.txt --out-file=./output.txt
+./main --in-file=./resources/input.txt --com-file=./resources/commands.txt --out-file=./resources/output.txt
 ```

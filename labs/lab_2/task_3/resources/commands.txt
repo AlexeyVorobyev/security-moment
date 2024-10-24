@@ -1,0 +1,7 @@
+cco o6
+ccs s6
+cdo o5
+cds s4
+cdr o2 s2 o
+cer o1 s1 x
+cer o1 s1 o
