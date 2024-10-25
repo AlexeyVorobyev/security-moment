@@ -5,7 +5,7 @@
 #include "set"
 #include "string"
 #include "iostream"
-#include "copyIf.cpp"
+#include "Utils/Utils.cpp"
 #include "fmt/core.h"
 #include "algorithm"
 
@@ -71,7 +71,7 @@ public:
             return predicate;
         };
 
-        copyIf(
+        Utils::copyIf(
                 this->relations.begin(),
                 this->relations.end(),
                 std::inserter(clearedRelations, clearedRelations.end()),
@@ -114,7 +114,7 @@ public:
             return predicate;
         };
 
-        copyIf(
+        Utils::copyIf(
                 this->relations.begin(),
                 this->relations.end(),
                 std::inserter(clearedRelations, clearedRelations.end()),
@@ -232,10 +232,17 @@ public:
         return this;
     }
 
+    auto getObjects() { return objects; };
+
+    auto getSubjects() { return subjects; };
+
+    auto getRelations()  { return relations; };
+
 private:
     HRUObjects objects;
     HRUSubjects subjects;
     HRURelations relations;
+
 };
 
 
