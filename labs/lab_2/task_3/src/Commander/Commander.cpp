@@ -38,6 +38,13 @@ public:
         std::cout << "started" << std::endl;
 
         this->loadInput();
+
+        std::vector<Command> commands = this->loadCommands();
+
+        for (Command command : commands) {
+            this->executeCommand(command);
+        };
+
 //
 //        std::string readLineData;
 //
@@ -82,6 +89,11 @@ private:
         std::string commandsFile;
         std::string outputFile;
     };
+
+    struct Command {
+        std::string command;
+        std::vector<std::string> args
+    }
 
     ParamKeys paramKeys = {"--in-file", "--comm-file", "--out-file"};
     ParamValues paramValues = {"./input.txt", "./commands.txt", "./output.txt"};
@@ -206,6 +218,40 @@ private:
                 subjectsSet,
                 relations
         );
+
+    };
+
+    std::vector<Command> loadCommands() {
+
+        std::ifstream commandsFile;
+        commandFile.open(paramValues.commandsFile.c_str(), std::ios_base::in);
+
+        if (!commandsFile.is_open()) {
+            throw std::invalid_argument("Error opening the " + paramValues.commandsFile + " file!");
+        }
+
+        std::vector<Command> commands;
+
+        std::string rawCommandLine;
+
+        while (getline(inputFile, rawCommandLine)) {
+
+            std::vector <std::string> commandWithArgs = split(rawCommandLine, " ");
+
+            std::vector<std::string> args (++commandWithArgs.begin(), commandWithArgs.end());
+
+            Command command = {
+                commandWithParams[0],
+                args
+            };
+
+            commands.push_back(command);
+        }
+
+        return commands;
+    };
+
+    void executeCommand(Command command) {
 
     };
 };
