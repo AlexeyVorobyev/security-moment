@@ -1,17 +1,17 @@
 #include "HRUModel/HRUModel.cpp"
 #include "catch2/catch_test_macros.hpp"
 
-TEST_CASE( "initialization does work", "[HRUModel]" ) {
+TEST_CASE( "initialization does work", "[TGModel]" ) {
     auto* model = new HRUModel();
 }
 
-TEST_CASE( "Add object to model", "[HRUModel]" ) {
+TEST_CASE( "Add object to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createObject("1");
 }
 
-TEST_CASE( "Add existing object to model", "[HRUModel]" ) {
+TEST_CASE( "Add existing object to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createObject("1");
@@ -22,7 +22,7 @@ TEST_CASE( "Add existing object to model", "[HRUModel]" ) {
     }
 }
 
-TEST_CASE( "Destroy not existing object", "[HRUModel]" ) {
+TEST_CASE( "Destroy not existing object", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     try {
@@ -31,7 +31,7 @@ TEST_CASE( "Destroy not existing object", "[HRUModel]" ) {
     }
 }
 
-TEST_CASE( "Destroy existing object", "[HRUModel]" ) {
+TEST_CASE( "Destroy existing object", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createObject("1");
@@ -39,13 +39,13 @@ TEST_CASE( "Destroy existing object", "[HRUModel]" ) {
     model->destroyObject("1");
 }
 
-TEST_CASE( "Add subject to model", "[HRUModel]" ) {
+TEST_CASE( "Add subject to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createSubject("1");
 }
 
-TEST_CASE( "Add existing Subject to model", "[HRUModel]" ) {
+TEST_CASE( "Add existing Subject to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createSubject("1");
@@ -56,7 +56,7 @@ TEST_CASE( "Add existing Subject to model", "[HRUModel]" ) {
     }
 }
 
-TEST_CASE( "Destroy not existing Subject", "[HRUModel]" ) {
+TEST_CASE( "Destroy not existing Subject", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     try {
@@ -65,7 +65,7 @@ TEST_CASE( "Destroy not existing Subject", "[HRUModel]" ) {
     }
 }
 
-TEST_CASE( "Destroy existing Subject", "[HRUModel]" ) {
+TEST_CASE( "Destroy existing Subject", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model->createSubject("1");
@@ -73,7 +73,7 @@ TEST_CASE( "Destroy existing Subject", "[HRUModel]" ) {
     model->destroySubject("1");
 }
 
-TEST_CASE( "Add relations to model", "[HRUModel]" ) {
+TEST_CASE( "Add relations to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model
@@ -98,7 +98,7 @@ TEST_CASE( "Add relations to model", "[HRUModel]" ) {
         );
 }
 
-TEST_CASE( "Add existing relation to model", "[HRUModel]" ) {
+TEST_CASE( "Add existing relation to model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model
@@ -132,7 +132,7 @@ TEST_CASE( "Add existing relation to model", "[HRUModel]" ) {
     }
 }
 
-TEST_CASE( "Destroy not existing relation in model", "[HRUModel]" ) {
+TEST_CASE( "Destroy not existing relation in model", "[TGModel]" ) {
     auto* model = new HRUModel();
 
     model

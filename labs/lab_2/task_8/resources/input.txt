@@ -1,0 +1,9 @@
+o1 o2 o3 o4
+s1 s2 s3 s4
+
+s1 s2 t
+s2 o1 t
+o1 o2 r
+s4 s3 g
+s4 o3 t
+o3 o4 r
