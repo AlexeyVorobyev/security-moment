@@ -46,6 +46,15 @@ public:
             count = 1;
         }
 
+            if (count != 1) {
+                compressedSequence+=std::to_string(count);
+            }
+
+            compressedSequence+=lastSymbol;
+
+            lastSymbol = currentSymbol;
+            count = 1;
+
         return compressedSequence;
     };
 };
