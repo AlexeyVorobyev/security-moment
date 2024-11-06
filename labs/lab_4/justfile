@@ -23,3 +23,6 @@ tf-decrypt:
 
 connect:
     ssh -o StrictHostKeyChecking=no root@$(cd ./terraform && terraform output -raw "ipv4")
+
+connect-sit:
+    ssh -o StrictHostKeyChecking=no sit@$(cd ./terraform && terraform output -raw "ipv4")

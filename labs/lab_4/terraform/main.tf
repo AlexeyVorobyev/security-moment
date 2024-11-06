@@ -52,3 +52,9 @@ resource "twc_server_ip" "ip" {
 output "ipv4" {
   value = twc_server_ip.ip.ip
 }
+
+resource "twc_server_disk" "disk" {
+  source_server_id = twc_server.server.id
+
+  size = 1024 * 5
+}
