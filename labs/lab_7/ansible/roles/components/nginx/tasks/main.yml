@@ -1,0 +1,32 @@
+- name: "Create directory"
+  file:
+    path: "{{ nginx_config.dir }}"
+    state: "directory"
+
+- name: "Copy docker-compose file"
+  template:
+    src: ../templates/docker-compose.nginx.template.j2
+    dest: "{{ nginx_config.dir }}//docker-compose.nginx.yml"
+
+- name: "Create and copy nginx.conf"
+  template:
+    src: ../templates/nginx.template.j2
+    dest: "{{ nginx_config.dir }}/nginx.conf"
+
+- name: "Copy index.html"
+  copy:
+    src: ../resources/index.html
+    dest: "{{ nginx_config.dir }}/index.html"
+
+- name: "Copy index.php"
+  copy:
+    src: ../resources/index.php
+    dest: "{{ nginx_config.dir }}/index.php"
+
+- name: "Deploy nginx"
+  community.docker.docker_compose_v2:
+    project_src: "{{ nginx_config.dir }}"
+    build: "always"
+    recreate: "always"
+    files:
+      - docker-compose.nginx.yml

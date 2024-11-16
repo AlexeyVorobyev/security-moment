@@ -1,0 +1,32 @@
+- name: "Create directory"
+  file:
+    path: "{{ apache_config.dir }}"
+    state: "directory"
+
+- name: "Copy docker-compose file"
+  template:
+    src: ../templates/docker-compose.apache.template.j2
+    dest: "{{ apache_config.dir }}//docker-compose.apache.yml"
+
+- name: "Create and copy apache.conf"
+  template:
+    src: ../templates/apache.template.j2
+    dest: "{{ apache_config.dir }}/apache.conf"
+
+- name: "Copy index.html"
+  copy:
+    src: ../resources/index.html
+    dest: "{{ apache_config.dir }}/index.html"
+
+- name: "Copy index.php"
+  copy:
+    src: ../resources/index.php
+    dest: "{{ apache_config.dir }}/index.php"
+
+- name: "Deploy apache"
+  community.docker.docker_compose_v2:
+    project_src: "{{ apache_config.dir }}"
+    build: "always"
+    recreate: "always"
+    files:
+      - docker-compose.apache.yml

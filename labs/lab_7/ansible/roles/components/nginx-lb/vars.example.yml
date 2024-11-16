@@ -1,0 +1,6 @@
+nginx_lb_config:
+  dir: ~/nginx-lb
+  balancer:
+    - 1.1.1.1:80
+    - 1.1.1.1:80
+    - 1.1.1.1:80

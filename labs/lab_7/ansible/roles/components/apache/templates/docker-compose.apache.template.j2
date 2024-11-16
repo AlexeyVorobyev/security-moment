@@ -1,0 +1,23 @@
+name: "apache"
+
+services:
+  apache:
+    image: httpd:2.4.62
+    container_name: apache
+    hostname: apache
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    links:
+      - fpm
+    volumes:
+      - ./apache.conf:/usr/local/apache2/conf/httpd.conf
+      - ./index.html:/var/www/html/index.html
+{#      - ./index.php:/var/www/html/index.php#}
+
+  fpm:
+    image: php:fpm
+    container_name: fpm
+    hostname: fpm
+    volumes:
+      - ./index.php:/var/www/html/index.php

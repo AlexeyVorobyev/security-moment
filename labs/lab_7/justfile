@@ -1,0 +1,37 @@
+set shell := ["bash", "-c"]
+
+tf-init target:
+    cd "./terraform/{{target}}" && terraform init
+
+tf-plan target:
+    cd "./terraform/{{target}}" && terraform plan -var-file="vars.tfvars"
+
+tf-apply target:
+    cd "./terraform/{{target}}" && terraform apply -var-file="vars.tfvars"
+
+tf-refresh target:
+    cd "./terraform/{{target}}" && terraform refresh -var-file="vars.tfvars"
+
+tf-destroy target:
+    cd "./terraform/{{target}}" && terraform destroy -var-file="vars.tfvars"
+
+tf-encrypt target:
+    cd "./terraform/{{target}}" && bash ./encrypt.sh
+
+tf-decrypt target:
+    cd "./terraform/{{target}}" && bash ./decrypt.sh
+
+connect target item:
+    ssh -o StrictHostKeyChecking=no root@$(cd "./terraform/{{target}}" && terraform output -raw "ipv4_{{item}}") -i ./terraform/{{target}}/id_key
+
+ans-deploy-regular:
+    bash ans-deploy-regular.sh
+
+ans-deploy-lb:
+    bash ans-deploy-lb.sh
+
+ans-encrypt:
+    cd ./ansible && bash encrypt.sh
+
+ans-decrypt:
+    cd ./ansible && bash decrypt.sh

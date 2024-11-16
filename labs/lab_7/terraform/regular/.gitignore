@@ -1,0 +1,4 @@
+.terraform.lock.hcl
+.terraform
+vars.tfvars
+id_key
