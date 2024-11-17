@@ -1,0 +1,23 @@
+name: "nginx"
+
+services:
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    hostname: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    links:
+      - fpm
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./index.html:/usr/share/nginx/html/index.html
+      - ./index.php:/usr/share/nginx/html/index.php
+
+  fpm:
+    image: php:fpm
+    container_name: fpm
+    hostname: fpm
+    volumes:
+      - ./index.php:/usr/share/nginx/html/index.php
