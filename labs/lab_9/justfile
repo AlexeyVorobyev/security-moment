@@ -1,0 +1,28 @@
+set shell := ["bash", "-c"]
+
+tf-init:
+    cd ./terraform && terraform init
+
+tf-plan:
+    cd ./terraform && terraform plan -var-file="vars.tfvars"
+
+tf-apply:
+    cd ./terraform && terraform apply -var-file="vars.tfvars"
+
+tf-refresh:
+    cd ./terraform && terraform refresh -var-file="vars.tfvars"
+
+tf-destroy:
+    cd ./terraform && terraform destroy -var-file="vars.tfvars"
+
+tf-encrypt:
+    cd ./terraform && bash ./encrypt.sh
+
+tf-decrypt:
+    cd ./terraform && bash ./decrypt.sh
+
+connect item:
+    ssh -o StrictHostKeyChecking=no root@$(cd ./terraform && terraform output -raw "ipv4_{{item}}") -i ./terraform/id_key
+
+ans:
+    bash ans.sh
